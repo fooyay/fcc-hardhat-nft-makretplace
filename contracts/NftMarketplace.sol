@@ -10,6 +10,8 @@ error NftMarketplace__AlreadyListed(address nftAddress, uint256 tokenId);
 error NftMarketplace__NotOwner();
 error NftMarketplace__NotListed(address nftAddress, uint256 tokenId);
 error NftMarketplace__PriceNotMet(address nftAddress, uint256 tokenId, uint256 price);
+error NftMarketplace__NoProceeds();
+error NftMarketplace__TransferFailed();
 
 contract NftMarketplace is ReentrancyGuard {
     struct Listing {
@@ -140,10 +142,22 @@ contract NftMarketplace is ReentrancyGuard {
         s_listings[nftAddress][tokenId].price = newPrice;
         emit ItemListed(msg.sender, nftAddress, tokenId, newPrice);
     }
+
+    function withdrawProceeds() external nonReentrant {
+        uint256 proceeds = s_proceeds[msg.sender];
+        if (proceeds <= 0) {
+            revert NftMarketplace__NoProceeds();
+        }
+        s_proceeds[msg.sender] = 0;
+        (bool success, ) = payable(msg.sender).call{value: proceeds}("");
+        if (!success) {
+            revert NftMarketplace__TransferFailed();
+        }
+    }
 }
 
 // 1. `listItem`: List NFTs on teh amrketplace ✅
 // 2. `buyItem`: Buy thE NFTs ✅
 // 3. `cancelItem`: Cancel a listing ✅
 // 4. `updateListing`: Update price ✅
-// 5. `withdrawProceeds`: Withdraw payment for my bought NFTs
+// 5. `withdrawProceeds`: Withdraw payment for my bought NFTs ✅
