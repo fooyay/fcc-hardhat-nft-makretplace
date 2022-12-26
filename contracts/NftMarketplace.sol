@@ -154,6 +154,19 @@ contract NftMarketplace is ReentrancyGuard {
             revert NftMarketplace__TransferFailed();
         }
     }
+
+    // Getter functions
+
+    function getListing(
+        address nftAddress,
+        uint256 tokenId
+    ) external view returns (Listing memory) {
+        return s_listings[nftAddress][tokenId];
+    }
+
+    function getProceeds(address seller) external view returns (uint256) {
+        return s_proceeds[seller];
+    }
 }
 
 // 1. `listItem`: List NFTs on teh amrketplace ✅
