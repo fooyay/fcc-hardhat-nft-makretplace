@@ -131,10 +131,19 @@ contract NftMarketplace is ReentrancyGuard {
         delete (s_listings[nftAddress][tokenId]);
         emit ItemCanceled(msg.sender, nftAddress, tokenId);
     }
+
+    function updateListing(
+        address nftAddress,
+        uint256 tokenId,
+        uint256 newPrice
+    ) external isListed(nftAddress, tokenId) isOwner(nftAddress, tokenId, msg.sender) {
+        s_listings[nftAddress][tokenId].price = newPrice;
+        emit ItemListed(msg.sender, nftAddress, tokenId, newPrice);
+    }
 }
 
 // 1. `listItem`: List NFTs on teh amrketplace ✅
 // 2. `buyItem`: Buy thE NFTs ✅
 // 3. `cancelItem`: Cancel a listing ✅
-// 4. `updateListing`: Update price
+// 4. `updateListing`: Update price ✅
 // 5. `withdrawProceeds`: Withdraw payment for my bought NFTs
