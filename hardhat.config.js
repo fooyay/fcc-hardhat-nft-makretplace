@@ -37,8 +37,11 @@ module.exports = {
         deployer: {
             default: 0,
         },
-        player: {
+        seller: {
             default: 1,
+        },
+        buyer: {
+            default: 2,
         },
     },
     etherscan: {

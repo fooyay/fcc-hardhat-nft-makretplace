@@ -78,7 +78,7 @@ contract NftMarketplace is ReentrancyGuard {
     // Main functions
 
     /**
-     * @notice Method for listing yoru NFT on the marketplace
+     * @notice Method for listing your NFT on the marketplace
      * @param nftAddress: Address of the NFT
      * @param tokenId: The token ID of the NFT
      * @param price: sales price of the listed NFT
@@ -129,7 +129,7 @@ contract NftMarketplace is ReentrancyGuard {
     function cancelListing(
         address nftAddress,
         uint256 tokenId
-    ) external isOwner(nftAddress, tokenId, msg.sender) isListed(nftAddress, tokenId) {
+    ) external isListed(nftAddress, tokenId) isOwner(nftAddress, tokenId, msg.sender) {
         delete (s_listings[nftAddress][tokenId]);
         emit ItemCanceled(msg.sender, nftAddress, tokenId);
     }

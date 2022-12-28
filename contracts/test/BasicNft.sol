@@ -10,7 +10,7 @@ contract BasicNft is ERC721 {
 
     event DogMinted(uint256 indexed tokenId);
 
-    constructor() ERC721("Dogie", "DOG") {
+    constructor() ERC721("Doggy", "DOG") {
         s_tokenCounter = 0;
     }
 
